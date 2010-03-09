@@ -16,7 +16,7 @@ describe Atig::Scheduler::Repeat, "when is used by single repeat handler" do
     @repeat[:a].should == 30
   end
 
-  it "should return just delay" do
+  it "should return delay" do
     # 呼び出しのたびに、使用回数を登録する
     @repeat.with :a, 2
 
