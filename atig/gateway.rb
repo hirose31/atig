@@ -1,14 +1,15 @@
 #! /opt/local/bin/ruby -w
 # -*- mode:ruby; coding:utf-8 -*-
 
-require 'atig/util'
 require "net/irc"
 require "ostruct"
 require "time"
+require 'atig/util'
 require 'atig/url_escape'
 require 'atig/fake_twitter'
 require 'atig/twitter'
 require 'atig/db/db'
+require 'atig/scheduler/scheduler'
 
 module Net::IRC::Constants
   RPL_WHOISBOT = "335"
@@ -119,7 +120,7 @@ module Atig
 
       log :debug, "initialize Twitter"
       @twitter = Twitter.new @log, @real, @pass
-      @api     = Scheduler.new @log, @twitter
+      @api     = Scheduler::Scheduler.new @log, @twitter
 
       log :debug, "initialize filter"
       @ifilters = @@ifilters.map do|ifilter|
@@ -149,7 +150,7 @@ module Atig
       create_channel main_channel
       create_channel mention_channel
 
-      @db = Atig::Db::Db.new @log, :me=>me, :size=> 100
+      @db = Db::Db.new @log, :me=>me, :size=> 100
 
       # main channel
       @db.statuses.listen do|entry|
@@ -270,7 +271,7 @@ module Atig
 
       q = output_message(:status => mesg, :source => api_source)
 
-      @api.delay(0, :retry=>3) do|t|
+      @api.single do|t|
         ret = t.post("statuses/update", q)
         safe {
           update_my_status ret,target
@@ -312,7 +313,7 @@ module Atig
     end
 
     def update_profile
-      @api.delay(0, :retry=>3) do|t|
+      @api.single do|t|
         t.post "account/update_profile"
       end
     rescue Twitter::APIFailed => e

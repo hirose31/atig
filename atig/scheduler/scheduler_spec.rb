@@ -4,8 +4,9 @@ require 'atig/scheduler/scheduler'
 describe Atig::Scheduler::Scheduler do
   before do
     @api = mock('api')
+    log  = mock 'log'
     @api.stub!(:limit).and_return(10)
-    @scheduler = Atig::Scheduler::Scheduler.new @api
+    @scheduler = Atig::Scheduler::Scheduler.new log,@api
   end
 
   it "should have single api call" do

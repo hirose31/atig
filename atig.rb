@@ -11,9 +11,7 @@ when File.directory?("lib")
 when File.directory?(File.expand_path("lib", ".."))
   $LOAD_PATH << File.expand_path("lib", "..")
 end
-
-require 'atig/twitter'
-require 'atig/scheduler'
+require 'atig/gateway'
 
 Dir['atig/agent/*.rb'].each do|file|
   load file
@@ -30,8 +28,6 @@ end
 Dir['atig/command/*.rb'].each do|file|
   require file
 end
-
-require 'atig/gateway'
 
 Atig::Gateway.agents   = [
                           Atig::Agent::List,

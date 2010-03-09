@@ -1,5 +1,6 @@
 #! /opt/local/bin/ruby -w
 # -*- mode:ruby; coding:utf-8 -*-
+require 'uri'
 
 class Hash
   # { :f  => "v" }    #=> "f=v"
