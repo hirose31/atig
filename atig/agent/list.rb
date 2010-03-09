@@ -14,6 +14,7 @@ module Atig
         log :info, "initialize"
 
         api.repeat(3600) do|t|
+          log :info, "run"
           lists = t.page("#{@db.me.screen_name}/lists", :lists, true)
           users = {}
           lists.map do|list|

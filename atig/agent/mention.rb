@@ -16,6 +16,7 @@ module Atig
         log :info, "initialize"
 
         @api.repeat(180) do|t|
+          log :info, "run"
           q = { :count => 200 }
           if @prev
             q.update :since_id => @prev

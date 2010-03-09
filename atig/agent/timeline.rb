@@ -15,6 +15,7 @@ module Atig
 
         @api = api
         @api.repeat(30) do|t|
+          log :info, "run"
           q = { :count => 200 }
 
           if @prev

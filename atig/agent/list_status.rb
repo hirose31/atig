@@ -16,6 +16,7 @@ class Atig::Agent::ListStatus
 
     @prev = {}
     api.repeat(60*5) do|t|
+      log :info, "run"
       db.lists.each do |name, _|
         log :debug, "retrieve #{name} statuses"
         q = {}

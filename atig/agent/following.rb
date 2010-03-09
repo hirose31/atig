@@ -14,6 +14,7 @@ module Atig
         log :info, "initialize"
 
         api.repeat(3600) do|t|
+          log :info, "run"
           followers = t.page("followers/ids/#{@db.me.id}", :ids)
 
           if @db.followings.empty?
