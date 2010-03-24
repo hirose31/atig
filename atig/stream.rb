@@ -32,6 +32,7 @@ module Atig
         request.basic_auth @user, @password
         http.request(request) do |response|
           response.read_body do |chunk|
+            @log.debug "stream: #{chunk}"
             next if chunk.strip.empty?
             buffer << chunk
             begin
