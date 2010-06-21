@@ -72,7 +72,7 @@ module Atig
                      :created_at  => Time.parse(opt[:status].created_at).to_i,
                      :data        => @db.dump(entry))
           if count == 0 then
-            db.execute("INSERT INTO id VALUES(NULL,?,?)", screen_name, 1)
+            db.execute("INSERT INTO id VALUES(NULL,?,1)", screen_name)
           else
             db.execute("UPDATE id SET count = ? WHERE screen_name = ?", count + 1, screen_name)
           end
