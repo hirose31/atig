@@ -65,9 +65,9 @@ module Atig
       end
 
       def may_notify(mode, xs)
-        unless xs.empty? then
-          notify mode, xs
-        end
+        # unless xs.empty? then
+        #   notify mode, xs
+        # end
       end
 
       def bool(b)
