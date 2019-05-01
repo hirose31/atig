@@ -5,7 +5,7 @@ require 'twitter-text'
 module Atig
   module Command
     class Status < Atig::Command::Command
-      include ::Twitter::Validation
+      include ::Twitter::TwitterText::Validation
 
       def command_name; %w(status) end
 
