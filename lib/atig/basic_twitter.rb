@@ -89,7 +89,9 @@ module Atig
       else
         raise APIFailed, "Server Returned #{ret.code} #{ret.message}"
       end
-    rescue Errno::ETIMEDOUT, JSON::ParserError, IOError, Timeout::Error, Errno::ECONNRESET => e
+    rescue Timeout::Error => te
+      raise te
+    rescue Errno::ETIMEDOUT, JSON::ParserError, IOError, Errno::ECONNRESET => e
       raise APIFailed, e.inspect
     end
 

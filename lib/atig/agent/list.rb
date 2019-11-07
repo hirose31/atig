@@ -1,6 +1,7 @@
 # -*- mode:ruby; coding:utf-8 -*-
 
 require 'atig/util'
+require 'retryable'
 
 module Atig
   module Agent
@@ -39,14 +40,21 @@ module Atig
                  else
                    "#{list.user.screen_name}^#{list.slug}"
                  end
-          begin
-            users[name] =
-              t.page("lists/members", :users, {owner_screen_name: list.user.screen_name, slug: list.slug})
-          rescue => e
-            log :error, e.inspect
-            users[name] =
-              @db.lists.find_by_list_name(list.slug)
+
+          Retryable.retryable(tries: 8, on: Timeout::Error) do
+            begin
+              @log.debug 'XXX fetch lists/members'
+              users[name] =
+                t.page("lists/members", :users, {owner_screen_name: list.user.screen_name, slug: list.slug})
+            rescue Timeout::Error => te
+              raise te
+            rescue => e
+              log :error, e.inspect
+              users[name] =
+                @db.lists.find_by_list_name(list.slug)
+            end
           end
+
         end
         @db.lists.update users
       end

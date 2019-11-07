@@ -48,6 +48,8 @@ module Atig
              end
       http.open_timeout = open_timeout if open_timeout # nil by default
       http.read_timeout = read_timeout if read_timeout # 60 by default
+      # http.max_retries = 8
+      # http.set_debug_output($stderr)
       if uri.is_a? URI::HTTPS
         http.use_ssl    = true
         http.cert_store = @cert_store
